@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biodata – Nama Lengkap Kamu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --meja:#1f3a4d;
+    --kertas:#f8f8f3;
+    --garis:#b9cde0;
+    --tinta:#1d3fbf;
+    --cap:#c62f3a;
+    --stabilo:#ffe45c;
+    --teks:#2a2f36;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{
+    min-height:100vh;
+    background:radial-gradient(circle at 20% 10%, rgba(255,255,255,.06), transparent 40%), var(--meja);
+    font-family:"Special Elite","Courier New",monospace;
+    color:var(--teks);
+    padding:40px 16px;
+    display:flex;justify-content:center;
+  }
+  .meja{width:100%;max-width:820px}
+
+  .judul{color:#e8eef3;padding-left:8px;margin-bottom:18px}
+  .judul h1{font-size:clamp(1.6rem,4vw,2.1rem);font-weight:400;line-height:40px}
+  .judul p{font-size:.9rem;line-height:26px;color:#9fb3c4}
+
+  /* ===== tab pembatas (sub bab) ===== */
+  .tab{display:flex;gap:6px;overflow-x:auto;padding:0 8px;margin-bottom:-1px;position:relative;z-index:1;scrollbar-width:none}
+  .tab::-webkit-scrollbar{display:none}
+  .tab button{
+    flex:0 0 auto;
+    font:inherit;font-size:.95rem;color:var(--teks);
+    border:0;cursor:pointer;
+    padding:10px 18px 8px;
+    border-radius:12px 12px 0 0;
+    transform:translateY(8px);
+    transition:transform .15s;
+  }
+  .tab button:hover{transform:translateY(4px)}
+  .tab button[aria-selected="true"]{transform:translateY(0);padding-bottom:12px;box-shadow:0 -2px 0 rgba(0,0,0,.08)}
+  .tab button:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+  .t1{background:#ffe45c}.t2{background:#9ed0f5}.t3{background:#f5b5c0}.t4{background:#b6e3b0}
+
+  /* ===== lembar kertas ===== */
+  .kertas{
+    position:relative;
+    background:var(--kertas);
+    padding:44px 56px 72px 88px;
+    min-height:480px;
+    box-shadow:0 24px 50px rgba(0,0,0,.35);
+    background-image:repeating-linear-gradient(to bottom, transparent 0 35px, var(--garis) 35px 36px);
+    background-position:0 20px;
+    border-radius:0 0 4px 4px;
+  }
+  .kertas[hidden]{display:none}
+  .kertas::before{content:"";position:absolute;top:0;bottom:0;left:64px;width:2px;background:#e9a3a8}
+  .lubang{position:absolute;left:20px;width:22px;height:22px;border-radius:50%;background:var(--meja);box-shadow:inset 0 2px 4px rgba(0,0,0,.5)}
+  .lubang:nth-of-type(1){top:12%}.lubang:nth-of-type(2){top:48%}.lubang:nth-of-type(3){top:84%}
+
+  h2{
+    font-weight:400;font-size:1.25rem;line-height:36px;
+    display:inline-block;
+    background:linear-gradient(transparent 55%, var(--stabilo) 55% 92%, transparent 92%);
+    padding:0 6px;margin-left:-6px;
+  }
+  h3{font-weight:400;font-size:1rem;line-height:36px;margin-top:12px;border-bottom:2px solid var(--tinta);display:inline-block;padding-right:12px}
+
+  .atas{display:flex;gap:32px;align-items:flex-start;margin-top:12px}
+  .data{flex:1;min-width:0}
+  .baris{display:flex;align-items:baseline;gap:12px;line-height:36px}
+  .baris dt{flex:0 0 150px;font-size:.95rem}
+  .baris dd{flex:1;min-width:0;font-family:"Caveat","Segoe Script",cursive;font-weight:700;font-size:1.55rem;color:var(--tinta);line-height:34px;overflow-wrap:anywhere}
+
+  .foto{flex:0 0 190px;background:#fff;padding:10px 10px 38px;box-shadow:0 8px 18px rgba(0,0,0,.22);transform:rotate(3deg);position:relative;margin-top:8px}
+  .foto::before{content:"";position:absolute;top:-14px;left:50%;width:84px;height:26px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,228,92,.7)}
+  .foto .bingkai{aspect-ratio:3/4;background:#dfe6ec;display:grid;place-items:center;text-align:center;font-size:.8rem;color:#6a7683;overflow:hidden}
+  .foto img{width:100%;height:100%;object-fit:cover;display:block}
+  .foto figcaption{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:"Caveat",cursive;font-size:1.25rem;color:var(--tinta)}
+
+  .tulis{font-family:"Caveat","Segoe Script",cursive;font-weight:500;font-size:1.5rem;color:var(--tinta);line-height:36px;max-width:60ch}
+  ul.tulis{list-style:none;padding:0;margin-top:6px}
+  ul.tulis li::before{content:"– "}
+
+  .riwayat{list-style:none;padding:0;margin-top:6px}
+  .riwayat li{display:flex;gap:16px;line-height:36px}
+  .riwayat .tahun{flex:0 0 120px;font-size:.95rem}
+  .riwayat .ket{font-family:"Caveat",cursive;font-weight:700;font-size:1.45rem;color:var(--tinta);line-height:34px}
+
+  .kaki{margin-top:40px;padding:22px 8px 0;border-top:2px dashed rgba(255,255,255,.28);display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 28px;color:#e8eef3}
+  .kaki h2{font-family:"Special Elite","Courier New",monospace;font-size:1.05rem;color:var(--meja);margin-left:0}
+  .kaki ul{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:4px 24px}
+  .kaki li{font-family:"Caveat","Segoe Script",cursive;font-weight:500;font-size:1.5rem;line-height:34px}
+  .kaki a{color:#fff;text-decoration:none;border-bottom:2px dotted #9fb3c4;padding:0 2px}
+  .kaki a:hover,.kaki a:focus-visible{background:var(--stabilo);color:var(--meja);border-bottom-color:var(--stabilo);outline:none}
+
+  .cap{
+    position:absolute;right:48px;bottom:20px;
+    border:4px double var(--cap);color:var(--cap);
+    padding:6px 18px;font-size:1.25rem;letter-spacing:.06em;
+    transform:rotate(-12deg);opacity:.85;mix-blend-mode:multiply;
+    animation:hentak .45s cubic-bezier(.2,1.6,.4,1) .3s both;
+  }
+  @keyframes hentak{from{transform:rotate(-12deg) scale(2.2);opacity:0}to{transform:rotate(-12deg) scale(1);opacity:.85}}
+
+  @media (max-width:640px){
+    body{padding:24px 10px}
+    .kertas{padding:36px 20px 80px 52px;min-height:420px}
+    .kertas::before{left:36px}
+    .lubang{left:8px;width:16px;height:16px}
+    .atas{flex-direction:column-reverse;align-items:center}
+    .data{width:100%}
+    .baris{flex-direction:column;gap:0;line-height:30px;margin-bottom:6px}
+    .baris dt{flex:none}
+    .riwayat li{flex-direction:column;gap:0;margin-bottom:6px}
+    .cap{right:16px}
+  }
+  @media (prefers-reduced-motion:reduce){.cap{animation:none}.tab button{transition:none}}
+</style>
+</head>
+<body>
+<main class="meja">
+  <header class="judul">
+    <h1>Lembar Biodata</h1>
+    <p>Pilih sub bab pada tab di bawah ini</p>
+  </header>
+
+  <!-- ========== TAB SUB BAB ========== -->
+  <nav class="tab" role="tablist" aria-label="Sub bab biodata">
+    <button class="t1" role="tab" id="tab-pengenalan" aria-controls="pengenalan" aria-selected="true">Pengenalan</button>
+    <button class="t2" role="tab" id="tab-keahlian"   aria-controls="keahlian"   aria-selected="false" tabindex="-1">Keahlian</button>
+    <button class="t3" role="tab" id="tab-hobi"       aria-controls="hobi"       aria-selected="false" tabindex="-1">Hobi</button>
+    <button class="t4" role="tab" id="tab-sekolah"    aria-controls="sekolah"    aria-selected="false" tabindex="-1">Sekolah</button>
+  </nav>
+
+  <!-- ========== SUB BAB 1: PENGENALAN ========== -->
+  <section class="kertas" id="pengenalan" role="tabpanel" aria-labelledby="tab-pengenalan">
+    <span class="lubang"></span><span class="lubang"></span><span class="lubang"></span>
+    <h2>Pengenalan</h2>
+    <div class="atas">
+      <dl class="data">
+        <!-- GANTI isi di bawah ini dengan data kamu -->
+        <div class="baris"><dt>Nama lengkap</dt><dd>Andrew Djafar</dd></div>
+        <div class="baris"><dt>Panggilan</dt><dd>Andrew</dd></div>
+        <div class="baris"><dt>Tempat, tgl lahir</dt><dd>Jakarta, 26 November 2010</dd></div>
+        <div class="baris"><dt>Jenis kelamin</dt><dd>Laki-laki</dd></div>
+        <div class="baris"><dt>Agama</dt><dd>Kristen Protestan</dd></div>
+        <div class="baris"><dt>Alamat</dt><dd>Sawahlio 4</dd></div>
+      </dl>
+      <figure class="foto">
+        <div class="bingkai">
+          <<img src="Andrew Ganteng.jpg" alt="Foto saya">/image
+          <span>Tempel<br>foto di sini</span>
+        </div>
+        <figcaption>aku</figcaption>
+      </figure>
+    </div>
+    <h3>Tentang saya</h3>
+    <p class="tulis">Tulis dua atau tiga kalimat singkat tentang dirimu di sini, dengan gayamu sendiri.</p>
+    <div class="cap" aria-hidden="true">Data asli</div>
+  </section>
+
+  <!-- ========== SUB BAB 2: KEAHLIAN ========== -->
+  <section class="kertas" id="keahlian" role="tabpanel" aria-labelledby="tab-keahlian" hidden>
+    <span class="lubang"></span><span class="lubang"></span><span class="lubang"></span>
+    <h2>Keahlian</h2>
+    <ul class="tulis">
+      <li>Membuat website sederhana</li>
+      <li>Desain grafis dasar</li>
+      <li>Fotografi</li>
+    </ul>
+  </section>
+
+  <!-- ========== SUB BAB 3: HOBI ========== -->
+  <section class="kertas" id="hobi" role="tabpanel" aria-labelledby="tab-hobi" hidden>
+    <span class="lubang"></span><span class="lubang"></span><span class="lubang"></span>
+    <h2>Hobi</h2>
+    <ul class="tulis">
+      <li>Bermain Basket</li>
+      <li>Fotografi</li>
+      <li>Bermain game strategi</li>
+    </ul>
+  </section>
+
+  <!-- ========== SUB BAB 4: SEKOLAH ========== -->
+  <section class="kertas" id="sekolah" role="tabpanel" aria-labelledby="tab-sekolah" hidden>
+    <span class="lubang"></span><span class="lubang"></span><span class="lubang"></span>
+    <h2>Sekolah</h2>
+    <ul class="riwayat">
+      <li><span class="tahun">2016 – 2022</span><span class="ket">Sekolah Damai</span></li>
+      <li><span class="tahun">2022 – 2025</span><span class="ket">Sekolah Damai</span></li>
+      <li><span class="tahun">2025 – 2028</span><span class="ket">Sekolah Damai</span></li>
+    </ul>
+  </section>
+
+  <!-- ========== FOOTER: KONTAK SAYA ========== -->
+  <footer class="kaki">
+    <h2>Kontak saya</h2>
+    <ul>
+      <li>Email: <a href="mailto:Djafarandrew26@gmail.com">Djafarandrew26@gmail.com</a></li>
+      <li>WhatsApp: <a href="https://wa.me/6285692838023">0856-9283-8023</a></li>
+      <li>Instagram: <a href="https://instagram.com/ndrraw_">@AndrewKingstonMega</a></li>
+    </ul>
+  </footer>
+</main>
+
+<script>
+  (function(){
+    var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+    function buka(id, fokus){
+      var ada = tabs.some(function(t){return t.getAttribute('aria-controls') === id});
+      if(!ada) id = 'pengenalan';
+      tabs.forEach(function(t){
+        var aktif = t.getAttribute('aria-controls') === id;
+        t.setAttribute('aria-selected', aktif);
+        t.tabIndex = aktif ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !aktif;
+        if(aktif && fokus) t.focus();
+      });
+    }
+    tabs.forEach(function(t, i){
+      t.addEventListener('click', function(){
+        var id = t.getAttribute('aria-controls');
+        buka(id);
+        history.replaceState(null, '', '#' + id);
+      });
+      t.addEventListener('keydown', function(e){
+        var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : -1;
+        if(j < 0) return;
+        e.preventDefault();
+        var tujuan = tabs[(j + tabs.length) % tabs.length];
+        buka(tujuan.getAttribute('aria-controls'), true);
+      });
+    });
+    buka(location.hash.slice(1));
+    window.addEventListener('hashchange', function(){ buka(location.hash.slice(1)); });
+  })();
+</script>
+</body>
+</html>
